@@ -9,7 +9,7 @@ const server = express()
 
 server.use(helmet());
 server.use(express.json())
-app.use(
+server.use(
   session({
       name: "session_name",
       secret: "my name is peter parker",
