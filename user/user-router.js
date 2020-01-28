@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const signIn = require('./user-model')
 const bcrypt = require('bcryptjs')
+const restricted = require('../middleware/restricted')
 
 router.get("/", async (req, res, next) => {
   const users = await Signup.get()
@@ -25,8 +26,9 @@ router.post('/', async (req, res, next) => {
     const passwordValid = await bcrypt.compare(password, user.password)
 
     if (user && passwordValid) {
+      req.session.user = user
       res.status(200).json({
-        message: `Welcome ${user.username}!`
+        message: `Welcome ${req.session.user.username}!`
       })
     } else {
       res.status(401).json({
